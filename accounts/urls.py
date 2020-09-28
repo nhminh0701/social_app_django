@@ -2,7 +2,7 @@ from django.urls import path, include
 from accounts.api import RegisterAPI, LoginAPI, UserAPI
 from knox import views as knox_views
 
-app_name = 'api'
+app_name = 'accounts'
 
 urlpatterns = [
     path('api/auth', include('knox.urls')),
