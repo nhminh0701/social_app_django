@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode development --watch ./frontend/src/index.js --output ./frontend/static/frontend/js/main.js",
+    "build": "webpack --mode production ./frontend/src/index.js --output ./frontend/static/frontend/js/main.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nhminh0701/social_app_django.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "nhminh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nhminh0701/social_app_django/issues"
