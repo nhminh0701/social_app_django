@@ -6,16 +6,16 @@ from posts.models import Post, Comment, Reply
 class PostAPI(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().reverse()
 
 
 class CommentAPI(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().reverse()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class ReplyAPI(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ReplySerializer
-    queryset = Reply.objects.all()
+    queryset = Reply.objects.all().reverse()
