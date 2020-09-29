@@ -4,7 +4,7 @@ from posts.models import Post, Comment, Reply
 
 
 class PostAPI(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.all()
 
@@ -12,10 +12,10 @@ class PostAPI(viewsets.ModelViewSet):
 class CommentAPI(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class ReplyAPI(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ReplySerializer
     queryset = Reply.objects.all()

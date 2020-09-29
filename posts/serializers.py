@@ -14,6 +14,10 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'content', 'created_at',
             'author', 'comments']
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return Post.objects.create(author=user, content=validated_data['content'])
+
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     replies = serializers.HyperlinkedRelatedField(

@@ -37,12 +37,15 @@ class UserAPITestCase(TestCase):
         """
         Unauthorized Status 401 resulted from invalid token
         """
-        response = self.client.get(reverse("accounts:user"), HTTP_AUTHORIZATION=f"Token {FAKE_TOKEN}")
+        response = self.client.get(reverse("accounts:user"), 
+            HTTP_AUTHORIZATION=f"Token {FAKE_TOKEN}")
         self.assertEqual(response.status_code, 401)
 
     def test_get_user_success(self):
-        register_response = self.client.post(reverse("accounts:register"), TESTED_USER_DATA)
+        register_response = self.client.post(reverse("accounts:register"), 
+            TESTED_USER_DATA)
         token = register_response.json()['token']
 
-        response = self.client.get(reverse("accounts:user"), HTTP_AUTHORIZATION=f"Token {token}")
+        response = self.client.get(reverse("accounts:user"), 
+            HTTP_AUTHORIZATION=f"Token {token}")
         self.assertEqual(response.status_code, 200)
