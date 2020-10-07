@@ -1,3 +1,4 @@
+// Auth types
 export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERRORS = 'AUTH_ERRORS';
@@ -6,3 +7,22 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
+
+
+// Posts types
+export const GETTING_POSTS = 'GETTING_POSTS';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POSTS_FAILED = 'GET_POSTS_FAILED';
+
+
+
+// Comments types
+export const POSTING_COMMENT = 'POSTING_COMMENT';
+export const POSTED_COMMENT = 'POSTED_COMMENT';
+export const POST_COMMENT_FAILED = 'POST_COMMENT_FAILED';
+export const EDITING_COMMENT = 'EDITING_COMMENT';
+export const EDITED_COMMENT = 'EDITED_COMMENT';
+export const EDIT_COMMENT_FAILED = 'EDIT_COMMENT_FAILED';
+export const DELETING_COMMENT = 'DELETING_COMMENT';
+export const DELETED_COMMENT = 'DELETED_COMMENT';
+export const DELETE_COMMENT_FAILED = 'DELETE_COMMENT_FAILED';

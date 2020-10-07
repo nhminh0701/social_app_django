@@ -34,7 +34,7 @@ class Reply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     comment = models.ForeignKey(Comment, 
-        on_delete=models.CASCADE, related_name='reply')
+        on_delete=models.CASCADE, related_name='replies')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
