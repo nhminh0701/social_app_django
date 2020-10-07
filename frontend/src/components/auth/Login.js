@@ -1,4 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { login } from '../../actions/auth';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 export class Login extends Component {
     state = {
@@ -6,6 +10,14 @@ export class Login extends Component {
         password: ""
     }
     
+    static propTypes = {
+        login: PropTypes.func.isRequired,
+        isAuthenticated: PropTypes.bool,
+    }
+
+    componentDidMount() {
+        document.title = "Login";
+    }
 
     onUsernameChange = event => {
         this.setState({
@@ -23,10 +35,14 @@ export class Login extends Component {
 
     onFormSubmit = event => {
         event.preventDefault();
-        console.log(this.state);
+        this.props.login(this.state.username, this.state.password);
     }
 
     render() {
+        if (this.props.isAuthenticated) {
+            return <Redirect to='/' />
+        }
+
         return (
             <div className="card mt-4">
                 <form onSubmit={this.onFormSubmit} className="card-body">
@@ -60,4 +76,8 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(Login)

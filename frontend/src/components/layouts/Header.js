@@ -3,10 +3,19 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { logout } from '../../actions/auth';
+
 
 export class Header extends Component {
 
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        logout: PropTypes.func.isRequired,
+    }
+
     render() {
+        const authenticated = this.props.auth.isAuthenticated;
+
         const guestLinks = (
             <React.Fragment>
                 <li className="nav-item">
@@ -22,6 +31,20 @@ export class Header extends Component {
             </React.Fragment>
         )
 
+        const authLinks = (
+            <React.Fragment>
+                <li className="nav-item">
+                    <Link to="" className="nav-link">
+                        { authenticated ? this.props.auth.user.username : '' }
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link to="" className="nav-link" onClick={this.props.logout}>
+                        Logout
+                    </Link>
+                </li>
+            </React.Fragment>
+        )
 
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,8 +59,8 @@ export class Header extends Component {
                     </button>
 
                     <div id="navigationMenu" className="navbar-collapse collapse">
-                        <ul className="navbar-nav mr-auto">
-                            { guestLinks }
+                        <ul className="navbar-nav ml-auto">
+                            { authenticated ? authLinks : guestLinks }
                         </ul>
                     </div>
                 </div>
@@ -50,4 +73,4 @@ const mapStateToProps = (state) =>  ({
     auth: state.auth,
 })
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, { logout })(Header)

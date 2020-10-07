@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import store from '../store';
+import { loadUser } from '../actions/auth';
 import { Provider } from 'react-redux';
 
 import Header from '../components/layouts/Header';
@@ -12,7 +13,7 @@ import Register from '../components/auth/Register';
 
 class App extends Component {
     componentDidMount() {
-        document.title = "Home Page";
+        store.dispatch(loadUser());
     }
 
     render() {
