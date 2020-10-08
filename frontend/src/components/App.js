@@ -24,9 +24,9 @@ class App extends Component {
                         <Header />
                         <div className="container">
                             <Switch>
-                                <Route exact path="" component={Dashboard} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
+                                <Route exact path="" component={Dashboard} />
                             </Switch>
                         </div>
                     </Fragment>

@@ -1,8 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { postComment } from '../../actions/comments';
 
 export class CommentForm extends Component {
     state = {
         comment: '',
+    }
+
+    static propTypes = {
+        postID: PropTypes.number,
     }
 
     onCommentChange = e => {
@@ -14,6 +21,7 @@ export class CommentForm extends Component {
 
     onFormSubmit = e => {
         e.preventDefault();
+        this.props.postComment(this.props.postID.toString(), this.state.comment);
     }
 
     render() {
@@ -23,6 +31,7 @@ export class CommentForm extends Component {
                     <input 
                         className="form-control" 
                         placeholder="Comment..."
+                        name="comment"
                         type="text"
                         onChange={this.onCommentChange}
                     />
@@ -38,4 +47,4 @@ export class CommentForm extends Component {
     }
 }
 
-export default CommentForm
+export default connect(null, { postComment })(CommentForm)

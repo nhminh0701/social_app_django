@@ -11,8 +11,15 @@ class PostAPI(viewsets.ModelViewSet):
 
 class CommentAPI(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all().reverse()
+    queryset = Comment.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Comment.objects.all().reverse()
+        postID = self.request.query_params.get('post', None)
+        if postID is not None:
+            queryset = queryset.filter(post=postID)
+        return queryset
 
 
 class ReplyAPI(viewsets.ModelViewSet):

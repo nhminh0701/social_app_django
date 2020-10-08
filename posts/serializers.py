@@ -11,7 +11,7 @@ class ReplySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     replies = ReplySerializer(many=True, read_only=True)
-    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all(), required=False)
     author = fields.ReadOnlyField(source='author.username')
 
     class Meta:
@@ -24,6 +24,11 @@ class CommentSerializer(serializers.ModelSerializer):
         post = validated_data['post']
         return Comment.objects.create(
             author=user, post=post, content=validated_data['content'])
+
+    def update(self, instance, validated_data):
+        instance.content = validated_data['content']
+        instance.save()
+        return instance
 
 
 

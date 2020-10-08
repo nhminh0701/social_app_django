@@ -24,7 +24,7 @@ class Comment(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        notifier = Notifier.objects.create(
+        notifier = Notifier.objects.get_or_create(
             owner=self.author, comment=self)
 
 
@@ -38,7 +38,7 @@ class Reply(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        notifier = Notifier.objects.create(
+        notifier = Notifier.objects.get_or_create(
             owner=self.author, reply=self)
 
     

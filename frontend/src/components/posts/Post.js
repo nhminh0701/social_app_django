@@ -13,7 +13,7 @@ export default function Post(props) {
                     <p className="my-4">{props.data.content}</p>
                 </li>
                 <li className="list-group-item">
-                    <CommentForm />
+                    <CommentForm postID={props.data.id} />
                     <Comments postData={props.data} />
                 </li>
             </ul>
