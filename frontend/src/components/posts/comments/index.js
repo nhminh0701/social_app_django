@@ -5,7 +5,7 @@ import Comment from './Comment';
 export default function Comments(props) {
     return (
         <ul className="list-group list-group-flush">
-            { props.postData.comments.map((comment, index) => 
+            { props.comments.map((comment, index) => 
             <Comment key={index} comment={comment} />) }
         </ul>
     )

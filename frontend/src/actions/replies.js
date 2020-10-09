@@ -2,25 +2,26 @@ import { CRUD_TYPES } from './types';
 import { configHeader } from './auth';
 
 
-const KEY = 'COMMENT';
+const KEY = 'REPLY';
 
-export const postComment = (post, content) => (dispatch, getState) => {
+export const postReply = (postID, comment, content) => 
+(dispatch, getState) => {
     const config = configHeader(getState, 'POST');
     config.body = JSON.stringify({
-        post, content,
+        content, comment,
     })
     
     dispatch({
         type: CRUD_TYPES.POST.POSTING + KEY
     })
-    fetch(`/api/comments/`, config)
+    fetch(`/api/replies/`, config)
     .then(res => {
         if (res.status < 400) {
             res.json()
-            .then(data => {
+            .then(replyData => {
                 dispatch({
                     type: CRUD_TYPES.POST.POSTED + KEY,
-                    payload: data
+                    payload: { replyData, postID }
                 })
             })
         } else {
@@ -34,17 +35,17 @@ export const postComment = (post, content) => (dispatch, getState) => {
 }
 
 
-export const deleteComment = (commentID, postID) => (dispatch, getState) => {
+export const deleteReply = (replyData, postID) => (dispatch, getState) => {
     const config = configHeader(getState, 'DELETE');
 
     dispatch({ type: CRUD_TYPES.DELETE.DELETING + KEY })
-    fetch(`/api/comments/${commentID}/`, config)
+    fetch(`/api/replies/${replyData.id}/`, config)
     .then(res => {
         if (res.status < 400) {
             dispatch({
                 type: CRUD_TYPES.DELETE.DELETED + KEY,
                 payload: {
-                    commentID, postID,
+                    replyData, postID,
                 },
             })
         } else {
@@ -59,25 +60,25 @@ export const deleteComment = (commentID, postID) => (dispatch, getState) => {
 }
 
 
-export const editComment = (commentID, content) => (dispatch, getState) => {
+export const editReply = (reply, content, postID) => (dispatch, getState) => {
     const config = configHeader(getState, 'PUT');
-    config.body = JSON.stringify({content});
+    config.body = JSON.stringify({
+        content, comment: reply.comment});
 
     dispatch({ type: CRUD_TYPES.EDIT.EDITING + KEY })
-    fetch(`/api/comments/${commentID}/`, config)
+    fetch(`/api/replies/${reply.id}/`, config)
     .then(res => {
         if (res.status < 400) {
             res.json()
-            .then(data => {
+            .then(replyData => {
                 dispatch({
                     type: CRUD_TYPES.EDIT.EDITED + KEY,
-                    payload: data,
+                    payload: { postID, replyData },
                 })
             })
         } else {
             dispatch({
                 type: CRUD_TYPES.EDIT.EDIT_FAILED + KEY,
-                payload: commentID
             })
             console.log(res);
         }

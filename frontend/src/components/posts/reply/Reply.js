@@ -2,25 +2,25 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { deleteComment } from '../../../actions/comments';
-import CommentEditForm from './CommentEditForm';
-import Replies from '../reply';
+import { deleteReply } from '../../../actions/replies';
+import ReplyEditForm from './ReplyEditForm';
 
 
 
-export class Comment extends Component {
+export class Reply extends Component {
 
     static propTypes = {
-        comment: PropTypes.shape({
+        reply: PropTypes.shape({
             author: PropTypes.string.isRequired,
             created_at: PropTypes.string.isRequired,
             content: PropTypes.string.isRequired,
             id: PropTypes.number.isRequired,
-            post: PropTypes.number.isRequired,
+            comment: PropTypes.number.isRequired,
         }),
         auth: PropTypes.object.isRequired,
         posts: PropTypes.object.isRequired,
-        deleteComment: PropTypes.func.isRequired,
+        deleteReply: PropTypes.func.isRequired,
+        postID: PropTypes.number.isRequired,
     }
 
     state = {
@@ -29,20 +29,14 @@ export class Comment extends Component {
 
     isEditable = () => {
         if (this.props.auth.user) {
-            return this.props.auth.user.username === this.props.comment.author;
+            return this.props.auth.user.username === this.props.reply.author;
         } else {
             return this.props.auth.user;
         }
     }
 
     onDeleteClick = () => {
-        this.props.deleteComment(
-            this.props.comment.id, this.props.comment.post);
-    }
-
-    onEditClick = e => {
-        this.toggleEditMode()
-        e.target.innerText = this.state.editMode ? "Edit" : "Cancel";
+        this.props.deleteReply(this.props.reply, this.props.postID);
     }
 
     toggleEditMode = () => {
@@ -51,9 +45,13 @@ export class Comment extends Component {
         })
     }
 
+    onEditClick = e => {
+        this.toggleEditMode();
+        e.target.innerText = this.state.editMode ? "Edit" : "Cancel";
+    }
+
     render() {
         const loadingJSX = <p>Loading</p>;
-
         const loadingBtnJSX = <p>Loading</p>;
         const loadedBtnJSX = <div className="btn-group" role="group">
                 <button 
@@ -70,21 +68,22 @@ export class Comment extends Component {
 
         const loadedJSX = <li className="list-group-item">
             <div className="d-flex w-100 justify-content-between align-items-center mb-4">
-                <p className="my-0">{ this.props.comment.author }</p>
+                <p className="my-0">{ this.props.reply.author }</p>
                 {   
                     !this.isEditable() ?
                     <Fragment /> :
-                    this.props.posts.isCommentLoading ? 
+                    this.props.posts.isReplyLoading ? 
                     loadingBtnJSX : loadedBtnJSX }
             </div>
-            <p>{ this.props.comment.created_at }</p>
+            <p>{ this.props.reply.created_at }</p>
             {   
                 !(this.state.editMode && this.isEditable()) ? 
-                <p>{ this.props.comment.content }</p> :
-                this.props.posts.isCommentLoading ? 
+                <p>{ this.props.reply.content }</p> :
+                this.props.posts.isReplyLoading ? 
                 loadingJSX : 
-                <CommentEditForm 
-                    comment={this.props.comment} 
+                <ReplyEditForm 
+                    reply={this.props.reply} 
+                    postID={this.props.postID} 
                     toggleEditMode={this.toggleEditMode}
                 />
             }
@@ -94,11 +93,6 @@ export class Comment extends Component {
         return (
             <Fragment>
                 { loadedJSX }
-                <Replies 
-                    postID={this.props.comment.post}
-                    commentID={this.props.comment.id}
-                    replies={this.props.comment.replies}
-                />
             </Fragment>
         )
     }
@@ -109,4 +103,4 @@ const mapStateToProps = state => ({
     auth: state.auth,
 })
 
-export default connect(mapStateToProps, {deleteComment})(Comment)
+export default connect(mapStateToProps, { deleteReply})(Reply)

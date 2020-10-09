@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { postComment } from '../../actions/comments';
+import { postReply } from '../../../actions/replies';
 
-export class CommentForm extends Component {
+export class ReplyForm extends Component {
     state = {
-        comment: '',
+        reply: '',
     }
 
     static propTypes = {
+        commentID: PropTypes.number,
         postID: PropTypes.number,
+        postReply: PropTypes.func.isRequired,
     }
 
-    onCommentChange = e => {
+    onReplyChange = e => {
         this.setState({
             ...this.state,
-            comment: e.target.value,
+            reply: e.target.value,
         })
     }
 
     onFormSubmit = e => {
         e.preventDefault();
-        this.props.postComment(
-            this.props.postID.toString(), this.state.comment);
+        this.props.postReply(
+            this.props.postID, 
+            this.props.commentID, this.state.reply);
         this.setState({
-            comment: ''
+            reply: ''
         });
     }
 
@@ -34,11 +37,10 @@ export class CommentForm extends Component {
                 <div className="input-group">
                     <input 
                         className="form-control" 
-                        placeholder="Comment..."
-                        name="comment"
+                        placeholder="Reply..."
                         type="text"
-                        onChange={this.onCommentChange}
-                        value={this.state.comment}
+                        onChange={this.onReplyChange}
+                        value={this.state.reply}
                     />
                     <div className="input-group-append">
                         <button 
@@ -52,4 +54,4 @@ export class CommentForm extends Component {
     }
 }
 
-export default connect(null, { postComment })(CommentForm)
+export default connect(null, { postReply })(ReplyForm)

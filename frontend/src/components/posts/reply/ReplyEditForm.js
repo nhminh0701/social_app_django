@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editComment } from '../../../actions/comments';
+import { editReply } from '../../../actions/replies';
 import PropTypes from 'prop-types';
 
 
-export class CommentEditForm extends Component {
+export class ReplyEditForm extends Component {
     state = {
-        comment: this.props.comment.content,
+        reply: this.props.reply.content,
     }
 
     static propTypes = {
-        comment: PropTypes.object.isRequired,
-        editComment: PropTypes.func.isRequired,
+        reply: PropTypes.object.isRequired,
+        editReply: PropTypes.func.isRequired,
+        postID: PropTypes.number.isRequired,
         toggleEditMode: PropTypes.func.isRequired,
     }
 
-    onCommentChange = e => {
+    onReplyChange = e => {
         this.setState({
             ...this.state,
-            comment: e.target.value,
-        })
+            reply: e.target.value,
+        });
     }
     
     onSubmitForm = e => {
         e.preventDefault();
-        this.props.editComment(
-            this.props.comment.id, this.state.comment)
+        this.props.editReply(
+            this.props.reply, 
+            this.state.reply, this.props.postID);
         this.setState({
-            comment: ''
-        });
+            reply: ''
+        })
         this.props.toggleEditMode();
     }
 
@@ -39,9 +41,9 @@ export class CommentEditForm extends Component {
                     <input 
                         className="form-control"
                         type="text"
-                        placeholder="Comment ..."
-                        value={this.state.comment}
-                        onChange={this.onCommentChange} 
+                        placeholder="Reply ..."
+                        value={this.state.reply}
+                        onChange={this.onReplyChange} 
                     />
                     <div className="input-group-append">
                         <button
@@ -55,4 +57,4 @@ export class CommentEditForm extends Component {
     }
 }
 
-export default connect(null, { editComment })(CommentEditForm)
+export default connect(null, { editReply })(ReplyEditForm)

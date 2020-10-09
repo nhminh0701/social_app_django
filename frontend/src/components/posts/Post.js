@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -16,17 +16,27 @@ export class Post extends Component {
     static propTypes = {
         deletePost: PropTypes.func.isRequired,
         data: PropTypes.object.isRequired,
+        auth: PropTypes.object.isRequired,
     }
 
     onEditBtnClicked = (e) => {
         this.setState({
             editMode: !this.state.editMode,
         });
-        e.target.innerHTML = this.state.editMode ? 'Cancel' : 'Edit'
+        e.target.innerHTML = this.state.editMode ?  'Edit' : 'Cancel';
     }
 
     onDeleteBtnClicked = () => {
         this.props.deletePost(this.props.data.id)
+    }
+
+    isEditable = () => {
+        if (this.props.auth.user) {
+            return this.props.data.author === this.props.auth.user.username;
+        } else {
+            return this.props.auth.user;
+        }
+            
     }
 
     render() {
@@ -49,18 +59,21 @@ export class Post extends Component {
                         <div className="d-flex justify-content-between">
                             <p className="card-title mb-0">
                                 {this.props.data.author}</p> 
-                            { btnGroup }
+                            { this.isEditable() ? btnGroup : <Fragment /> }
                         </div>
                         <small>{this.props.data.created_at}</small>
                         
-                        {   this.state.editMode ? 
+                        {   this.state.editMode && this.isEditable() ? 
                             <PostEditForm data={this.props.data}/> :
                             <p className="my-4">{this.props.data.content}</p>
                         }
                     </li>
                     <li className="list-group-item">
-                        <CommentForm postID={this.props.data.id} />
-                        <Comments postData={this.props.data} />
+                        { this.props.auth.isAuthenticated ?
+                            <CommentForm postID={this.props.data.id} /> :
+                            <Fragment />
+                        }
+                        <Comments comments={this.props.data.comments} />
                     </li>
                 </ul>
             </div>
@@ -68,4 +81,8 @@ export class Post extends Component {
     }
 }
 
-export default connect(null, { deletePost })(Post);
+const mapStateToProps = state => ({
+    auth: state.auth,
+})
+
+export default connect(mapStateToProps, { deletePost })(Post);
