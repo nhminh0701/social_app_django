@@ -2,6 +2,15 @@ import {
     GETTING_POSTS,
     GET_POSTS,
     GET_POSTS_FAILED,
+    POSTING_POST,
+    POSTED_POST,
+    POST_POST_FAILED,
+    EDITING_POST,
+    EDITED_POST,
+    EDIT_POST_FAILED,
+    DELETING_POST,
+    DELETED_POST,
+    DELETE_POST_FAILED,
     POSTING_COMMENT,
     POSTED_COMMENT,
     POST_COMMENT_FAILED,
@@ -21,10 +30,13 @@ const initialState = {
 
 export default function (state=initialState, action) {
     switch (action.type) {
+        case GETTING_POSTS:
+        case POSTING_POST:
+        case DELETING_POST:
+        case EDITING_POST:
         case POSTING_COMMENT:
         case DELETING_COMMENT:
         case EDITING_COMMENT:
-        case GETTING_POSTS:
             return {
                 ...state,
                 isLoading: true,
@@ -34,6 +46,30 @@ export default function (state=initialState, action) {
             return {
                 ...state,
                 ...action.payload,
+                isLoading: false,
+            }
+
+        case POSTED_POST:
+            return {
+                ...state,
+                posts: [action.payload, ...state.posts],
+                isLoading: false,
+            }
+
+        case EDITED_POST:
+            return {
+                ...state,
+                posts: state.posts.map(
+                    post => post.id === action.payload.id ?
+                    action.payload : post),
+                isLoading: false,
+            }
+
+        case DELETED_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(
+                    post => post.id !== action.payload),
                 isLoading: false,
             }
 

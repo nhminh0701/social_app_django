@@ -24,8 +24,6 @@ class Posts extends Component {
                     </Fragment>
         return (
             <Fragment>
-                Posts
-
                 <div className="container">
                     { posts }
                 </div>

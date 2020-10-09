@@ -1,5 +1,6 @@
 import React from 'react';
-import Posts from '../layouts/Posts'
+import Posts from '../layouts/Posts';
+import PostCreateForm from '../layouts/PostForm';
 
 
 export default function Dashboard() {
@@ -7,7 +8,8 @@ export default function Dashboard() {
 
     return (
         <div>
-            <h1>Dashboard</h1>
+            <PostCreateForm />
+            <br></br>
             <Posts />
         </div>
     )

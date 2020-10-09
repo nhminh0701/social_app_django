@@ -10,7 +10,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.notifier = Notifier.objects.create(
+        notifier = Notifier.objects.get_or_create(
             owner=self.author, post=self)
 
 

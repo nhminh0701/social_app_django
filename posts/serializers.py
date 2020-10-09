@@ -45,6 +45,11 @@ class PostSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         return Post.objects.create(author=user, content=validated_data['content'])
 
+    def update(self, instance, validated_data):
+        instance.content = validated_data['content']
+        instance.save()
+        return instance
+
 
 
 

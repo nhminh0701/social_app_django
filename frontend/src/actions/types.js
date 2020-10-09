@@ -13,6 +13,15 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
 export const GETTING_POSTS = 'GETTING_POSTS';
 export const GET_POSTS = 'GET_POSTS';
 export const GET_POSTS_FAILED = 'GET_POSTS_FAILED';
+export const POSTING_POST = 'POSTING_POST';
+export const POSTED_POST = 'POSTED_POST';
+export const POST_POST_FAILED = 'POST_POST_FAILED';
+export const EDITING_POST = 'EDITING_POST';
+export const EDITED_POST = 'EDITED_POST';
+export const EDIT_POST_FAILED = 'EDIT_POST_FAILED';
+export const DELETING_POST = 'DELETING_POST';
+export const DELETED_POST = 'DELETED_POST';
+export const DELETE_POST_FAILED = 'DELETE_POST_FAILED';
 
 
 
