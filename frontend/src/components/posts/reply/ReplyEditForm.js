@@ -9,12 +9,6 @@ export class ReplyEditForm extends Component {
         reply: this.props.reply.content,
     }
 
-    static propTypes = {
-        reply: PropTypes.object.isRequired,
-        editReply: PropTypes.func.isRequired,
-        postID: PropTypes.number.isRequired,
-        toggleEditMode: PropTypes.func.isRequired,
-    }
 
     onReplyChange = e => {
         this.setState({
@@ -55,6 +49,13 @@ export class ReplyEditForm extends Component {
             </form>
         )
     }
+}
+
+ReplyEditForm.propTypes = {
+    reply: PropTypes.object.isRequired,
+    editReply: PropTypes.func.isRequired,
+    postID: PropTypes.number.isRequired,
+    toggleEditMode: PropTypes.func.isRequired,
 }
 
 export default connect(null, { editReply })(ReplyEditForm)

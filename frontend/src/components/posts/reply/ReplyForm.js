@@ -33,10 +33,10 @@ export class ReplyForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.onFormSubmit}>
+            <form onSubmit={this.onFormSubmit} className="mt-2">
                 <div className="input-group">
                     <input 
-                        className="form-control" 
+                        className="form-control border-0" 
                         placeholder="Reply..."
                         type="text"
                         onChange={this.onReplyChange}

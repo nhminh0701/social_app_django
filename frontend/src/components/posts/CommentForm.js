@@ -33,7 +33,7 @@ export class CommentForm extends Component {
             <form onSubmit={this.onFormSubmit}>
                 <div className="input-group">
                     <input 
-                        className="form-control" 
+                        className="form-control border-0" 
                         placeholder="Comment..."
                         name="comment"
                         type="text"

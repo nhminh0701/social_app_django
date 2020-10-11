@@ -11,6 +11,13 @@ import { deletePost } from '../../actions/posts';
 export class Post extends Component {
     state = {
         editMode: false,
+        commentsShowed: false,
+    }
+
+    toggleCommentShowed = () => {
+        this.setState({
+            commentsShowed: !this.state.commentsShowed
+        })
     }
 
     static propTypes = {
@@ -39,27 +46,54 @@ export class Post extends Component {
             
     }
 
-    render() {
+    getBtnGroups = () => (
+        <div className="btn-group" role="group">
+            <button
+                className="btn btn-sm btn-primary"
+                onClick={this.onEditBtnClicked}
+                >Edit</button>
+            <button
+                className="btn btn-sm btn-danger"
+                onClick={this.onDeleteBtnClicked}
+                >Delete</button>
+        </div>
+    )
 
-        const btnGroup =   <div className="btn-group" role="group">
-                                <button
-                                    className="btn btn-sm btn-primary"
-                                    onClick={this.onEditBtnClicked}
-                                >Edit</button>
-                                <button
-                                    className="btn btn-sm btn-danger"
-                                    onClick={this.onDeleteBtnClicked}
-                                >Delete</button>
-                            </div>
-
+    getShowCommentBtn = () => {
         return (
-            <div className="card mb-4">
+            <Fragment>
+                { this.props.data.comments.length > 0 ?
+                    <button 
+                        className="btn btn-sm bg-light btn-block my-2 text-center"
+                        onClick={this.toggleCommentShowed}
+                    >{ this.getShowCommentBtnText() }</button> :
+                    <Fragment />
+                }
+            </Fragment>
+        )
+    }
+
+    getShowCommentBtnText = () => {
+        const commentsCount = this.props.data.comments.length;
+        const commentShowedText = commentsCount === 1 ?
+            "Hide comment" : `Hide ${commentsCount} comments`;
+        const commentHidedText = commentsCount === 1 ?
+            "Show comment" : `Show ${commentsCount} comments`;
+        return  this.state.commentsShowed ? 
+                commentShowedText : 
+                commentHidedText;
+    }
+
+    render() { 
+        return (
+            <div className="card my-5">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                         <div className="d-flex justify-content-between">
                             <p className="card-title mb-0">
                                 {this.props.data.author}</p> 
-                            { this.isEditable() ? btnGroup : <Fragment /> }
+                            { this.isEditable() ? 
+                            this.getBtnGroups() : <Fragment /> }
                         </div>
                         <small>{this.props.data.created_at}</small>
                         
@@ -73,7 +107,13 @@ export class Post extends Component {
                             <CommentForm postID={this.props.data.id} /> :
                             <Fragment />
                         }
-                        <Comments comments={this.props.data.comments} />
+
+                        { this.getShowCommentBtn() }
+
+                        {
+                            this.state.commentsShowed ?
+                            <Comments comments={this.props.data.comments} /> : <Fragment />
+                        }
                     </li>
                 </ul>
             </div>

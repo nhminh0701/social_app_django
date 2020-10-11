@@ -9,23 +9,10 @@ import ReplyEditForm from './ReplyEditForm';
 
 export class Reply extends Component {
 
-    static propTypes = {
-        reply: PropTypes.shape({
-            author: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired,
-            content: PropTypes.string.isRequired,
-            id: PropTypes.number.isRequired,
-            comment: PropTypes.number.isRequired,
-        }),
-        auth: PropTypes.object.isRequired,
-        posts: PropTypes.object.isRequired,
-        deleteReply: PropTypes.func.isRequired,
-        postID: PropTypes.number.isRequired,
-    }
-
     state = {
         editMode: false,
     }
+
 
     isEditable = () => {
         if (this.props.auth.user) {
@@ -67,7 +54,7 @@ export class Reply extends Component {
             </div>
 
         const loadedJSX = <li className="list-group-item">
-            <div className="d-flex w-100 justify-content-between align-items-center mb-4">
+            <div className="d-flex w-100 justify-content-between align-items-center mb-1 mt-3">
                 <p className="my-0">{ this.props.reply.author }</p>
                 {   
                     !this.isEditable() ?
@@ -75,7 +62,7 @@ export class Reply extends Component {
                     this.props.posts.isReplyLoading ? 
                     loadingBtnJSX : loadedBtnJSX }
             </div>
-            <p>{ this.props.reply.created_at }</p>
+            <small>{ this.props.reply.created_at }</small>
             {   
                 !(this.state.editMode && this.isEditable()) ? 
                 <p>{ this.props.reply.content }</p> :
@@ -96,6 +83,20 @@ export class Reply extends Component {
             </Fragment>
         )
     }
+}
+
+Reply.propTypes = {
+    reply: PropTypes.shape({
+        author: PropTypes.string.isRequired,
+        created_at: PropTypes.string.isRequired,
+        content: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
+        comment: PropTypes.number.isRequired,
+    }),
+    auth: PropTypes.object.isRequired,
+    posts: PropTypes.object.isRequired,
+    deleteReply: PropTypes.func.isRequired,
+    postID: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = state => ({

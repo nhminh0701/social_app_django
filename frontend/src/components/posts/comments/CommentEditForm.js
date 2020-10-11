@@ -9,12 +9,6 @@ export class CommentEditForm extends Component {
         comment: this.props.comment.content,
     }
 
-    static propTypes = {
-        comment: PropTypes.object.isRequired,
-        editComment: PropTypes.func.isRequired,
-        toggleEditMode: PropTypes.func.isRequired,
-    }
-
     onCommentChange = e => {
         this.setState({
             ...this.state,
@@ -53,6 +47,12 @@ export class CommentEditForm extends Component {
             </form>
         )
     }
+}
+
+CommentEditForm.propTypes = {
+    comment: PropTypes.object.isRequired,
+    editComment: PropTypes.func.isRequired,
+    toggleEditMode: PropTypes.func.isRequired,
 }
 
 export default connect(null, { editComment })(CommentEditForm)
