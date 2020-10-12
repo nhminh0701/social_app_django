@@ -7,10 +7,6 @@ import { postPost } from '../../actions/posts';
 
 
 export class PostForm extends Component {
-    static propTypes = {
-        auth: PropTypes.object.isRequired,
-        postPost: PropTypes.func.isRequired,
-    }
 
     state = {
         content: '',
@@ -25,6 +21,11 @@ export class PostForm extends Component {
     onSubmit = e => {
         e.preventDefault();
         this.props.postPost(this.state.content);
+        this.props.ws.send(JSON.stringify({
+            type: 'post_post',
+            content: this.state.content,
+            token: this.props.auth.token,
+        }))
         e.target.value = '';
     }
 
@@ -46,6 +47,12 @@ export class PostForm extends Component {
             </form>
         )
     }
+}
+
+PostForm.propTypes = {
+    auth: PropTypes.object.isRequired,
+    postPost: PropTypes.func.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

@@ -12,7 +12,7 @@ export function Dashboard(props) {
     return (
         <div>
             {   props.auth.isAuthenticated ?
-                <PostCreateForm /> : <Fragment />
+                <PostCreateForm ws={props.ws}/> : <Fragment />
             }
             <Posts />
         </div>
@@ -21,6 +21,7 @@ export function Dashboard(props) {
 
 Dashboard.propTypes = {
     auth: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 

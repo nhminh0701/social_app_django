@@ -12,8 +12,26 @@ import Register from '../components/auth/Register';
 
 
 class App extends Component {
+
+    ws = new WebSocket(`ws://${window.location.host}/ws/lobby/`)
+
     componentDidMount() {
         store.dispatch(loadUser());
+        this.configWebSocket();
+    }
+
+    configWebSocket() {
+        this.ws.onopen = () => {
+            console.log('Connected');
+        }
+
+        this.ws.onclose = () => {
+            console.log('Disconnected');
+        }
+
+        this.ws.onmessage = event => {
+            console.log(event.data);
+        }
     }
 
     render() {
@@ -26,7 +44,7 @@ class App extends Component {
                             <Switch>
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/login" component={Login} />
-                                <Route exact path="" component={Dashboard} />
+                                <Route exact path="" component={() => <Dashboard ws={this.ws}/>} />
                             </Switch>
                         </div>
                     </Fragment>
