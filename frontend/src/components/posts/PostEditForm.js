@@ -6,10 +6,6 @@ import { editPost } from '../../actions/posts';
 
 
 export class PostEditForm extends Component {
-    static propTypes = {
-        editPost: PropTypes.func.isRequired,
-        data: PropTypes.object.isRequired,
-    }
 
     state = {
         content: this.props.data.content,
@@ -23,7 +19,14 @@ export class PostEditForm extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        this.props.editPost(this.state.content, this.props.data.id);
+        // this.props.editPost(this.state.content, this.props.data.id);
+        this.props.ws.send(JSON.stringify({
+            type: 'EDITING_POST',
+            token: this.props.auth.token,
+            id: this.props.data.id,
+            content: this.state.content,
+        }))
+        this.props.toggleEditMode();
     }
 
     render() {
@@ -46,4 +49,17 @@ export class PostEditForm extends Component {
     }
 }
 
-export default connect(null, { editPost })(PostEditForm)
+PostEditForm.propTypes = {
+    editPost: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
+    toggleEditMode: PropTypes.func.isRequired,
+}
+
+
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps, { editPost })(PostEditForm)

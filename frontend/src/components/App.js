@@ -11,6 +11,7 @@ import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
 
 
+
 class App extends Component {
 
     ws = new WebSocket(`ws://${window.location.host}/ws/lobby/`)
@@ -30,7 +31,11 @@ class App extends Component {
         }
 
         this.ws.onmessage = event => {
-            console.log(event.data);
+            let msg = JSON.parse(event.data);
+            store.dispatch({
+                type: msg.type,
+                payload: msg.content,
+            })
         }
     }
 

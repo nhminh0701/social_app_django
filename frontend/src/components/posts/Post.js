@@ -16,25 +16,30 @@ export class Post extends Component {
 
     toggleCommentShowed = () => {
         this.setState({
+            ...this.state,
             commentsShowed: !this.state.commentsShowed
         })
     }
 
-    static propTypes = {
-        deletePost: PropTypes.func.isRequired,
-        data: PropTypes.object.isRequired,
-        auth: PropTypes.object.isRequired,
+    toggleEditMode = () => {
+        this.setState({
+            ...this.state,
+            editMode: !this.state.editMode,
+        })
     }
 
     onEditBtnClicked = (e) => {
-        this.setState({
-            editMode: !this.state.editMode,
-        });
+        this.toggleEditMode()
         e.target.innerHTML = this.state.editMode ?  'Edit' : 'Cancel';
     }
 
     onDeleteBtnClicked = () => {
-        this.props.deletePost(this.props.data.id)
+        // this.props.deletePost(this.props.data.id)
+        this.props.ws.send(JSON.stringify({
+            type: 'DELETING_POST',
+            id: this.props.data.id,
+            token: this.props.auth.token,
+        }))
     }
 
     isEditable = () => {
@@ -98,7 +103,10 @@ export class Post extends Component {
                         <small>{this.props.data.created_at}</small>
                         
                         {   this.state.editMode && this.isEditable() ? 
-                            <PostEditForm data={this.props.data}/> :
+                            <PostEditForm 
+                                ws={this.props.ws} 
+                                data={this.props.data}
+                                toggleEditMode={this.toggleEditMode}/> :
                             <p className="my-4">{this.props.data.content}</p>
                         }
                     </li>
@@ -119,6 +127,13 @@ export class Post extends Component {
             </div>
         )
     }
+}
+
+Post.propTypes = {
+    deletePost: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

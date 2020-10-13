@@ -6,10 +6,6 @@ import Post from '../posts/Post';
 
 
 class Posts extends Component {
-    static propTypes = {
-        posts: PropTypes.object.isRequired,
-        getPosts: PropTypes.func.isRequired,
-    }
 
     componentDidMount() {
         this.props.getPosts();
@@ -20,7 +16,7 @@ class Posts extends Component {
                     '' :
                     <Fragment>
                         {this.props.posts.posts.map(post => 
-                        <Post key={post.id} data={post} />)}
+                        <Post key={post.id} data={post} ws={this.props.ws} />)}
                     </Fragment>
         return (
             <Fragment>
@@ -30,6 +26,12 @@ class Posts extends Component {
             </Fragment>
         )
     }
+}
+
+Posts.propTypes = {
+    posts: PropTypes.object.isRequired,
+    getPosts: PropTypes.func.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 

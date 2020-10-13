@@ -14,7 +14,7 @@ export function Dashboard(props) {
             {   props.auth.isAuthenticated ?
                 <PostCreateForm ws={props.ws}/> : <Fragment />
             }
-            <Posts />
+            <Posts ws={props.ws} />
         </div>
     )
 }

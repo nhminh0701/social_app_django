@@ -20,9 +20,9 @@ export class PostForm extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        this.props.postPost(this.state.content);
+        // this.props.postPost(this.state.content);
         this.props.ws.send(JSON.stringify({
-            type: 'post_post',
+            type: 'POSTING_POST',
             content: this.state.content,
             token: this.props.auth.token,
         }))
