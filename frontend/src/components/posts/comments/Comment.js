@@ -24,8 +24,14 @@ export class Comment extends Component {
     }
 
     onDeleteClick = () => {
-        this.props.deleteComment(
-            this.props.comment.id, this.props.comment.post);
+        // this.props.deleteComment(
+        //     this.props.comment.id, this.props.comment.post);
+        this.props.ws.send(JSON.stringify({
+            commentID: this.props.comment.id,
+            postID: this.props.comment.post,
+            token: this.props.auth.token,
+            type: 'DELETING_COMMENT',
+        }))
     }
 
     onEditClick = e => {
@@ -68,6 +74,7 @@ export class Comment extends Component {
                 <CommentEditForm 
                     comment={this.props.comment} 
                     toggleEditMode={this.toggleEditMode}
+                    ws={this.props.ws}
                 />
             }
             {  
@@ -124,6 +131,7 @@ export class Comment extends Component {
                         postID={this.props.comment.post}
                         commentID={this.props.comment.id}
                         replies={this.props.comment.replies}
+                        ws={this.props.ws}
                     />
                 </div>
             </Fragment>
@@ -143,6 +151,7 @@ Comment.propTypes = {
     auth: PropTypes.object.isRequired,
     posts: PropTypes.object.isRequired,
     deleteComment: PropTypes.func.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

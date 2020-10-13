@@ -18,8 +18,14 @@ export class CommentEditForm extends Component {
     
     onSubmitForm = e => {
         e.preventDefault();
-        this.props.editComment(
-            this.props.comment.id, this.state.comment)
+        // this.props.editComment(
+        //     this.props.comment.id, this.state.comment)
+        this.props.ws.send(JSON.stringify({
+            token: this.props.auth.token,
+            type: 'EDITING_COMMENT',
+            commentID: this.props.comment.id,
+            content: this.state.comment,
+        }))
         this.setState({
             comment: ''
         });
@@ -53,6 +59,12 @@ CommentEditForm.propTypes = {
     comment: PropTypes.object.isRequired,
     editComment: PropTypes.func.isRequired,
     toggleEditMode: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
-export default connect(null, { editComment })(CommentEditForm)
+const mapStateToProps = state => ({
+    auth: state.auth,
+})
+
+export default connect(mapStateToProps, { editComment })(CommentEditForm)

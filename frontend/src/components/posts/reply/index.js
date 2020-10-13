@@ -9,8 +9,8 @@ function Replies(props) {
     const repliesList = (
         <ul className="list-group list-group-flush">
             { props.replies.map((reply, index) => 
-            <Reply key={index} 
-                reply={reply} postID={props.postID} />) }
+            <Reply key={index} reply={reply} 
+                postID={props.postID} ws={props.ws} />) }
         </ul>
     )
 
@@ -19,10 +19,12 @@ function Replies(props) {
             { props.repliesShowed ?
                 repliesList : <Fragment />
             }
-            { props.isAuthenticated ? 
+            { props.auth.isAuthenticated ? 
                 <ReplyForm
                     postID={props.postID}
-                    commentID={props.commentID} /> : <Fragment />
+                    commentID={props.commentID} 
+                    ws={props.ws}
+                    /> : <Fragment />
             }
         </Fragment>
     )
@@ -33,11 +35,12 @@ Replies.propTypes = {
     commentID: PropTypes.number.isRequired,
     postID: PropTypes.number.isRequired,
     replies: PropTypes.array.isRequired,
-    isAuthenticated: PropTypes.bool,
+    auth: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    auth: state.auth,
 })
 
 export default connect(mapStateToProps)(Replies);

@@ -112,7 +112,8 @@ export class Post extends Component {
                     </li>
                     <li className="list-group-item">
                         { this.props.auth.isAuthenticated ?
-                            <CommentForm postID={this.props.data.id} /> :
+                            <CommentForm postID={this.props.data.id} 
+                            ws={this.props.ws} /> :
                             <Fragment />
                         }
 
@@ -120,7 +121,10 @@ export class Post extends Component {
 
                         {
                             this.state.commentsShowed ?
-                            <Comments comments={this.props.data.comments} /> : <Fragment />
+                            <Comments 
+                            comments={this.props.data.comments} 
+                            ws={this.props.ws} /> : 
+                            <Fragment />
                         }
                     </li>
                 </ul>

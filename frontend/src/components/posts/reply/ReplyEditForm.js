@@ -19,9 +19,16 @@ export class ReplyEditForm extends Component {
     
     onSubmitForm = e => {
         e.preventDefault();
-        this.props.editReply(
-            this.props.reply, 
-            this.state.reply, this.props.postID);
+        // this.props.editReply(
+        //     this.props.reply, 
+        //     this.state.reply, this.props.postID);
+        this.props.ws.send(JSON.stringify({
+            token: this.props.auth.token,
+            type: 'EDITING_REPLY',
+            replyData: this.props.reply,
+            postID: this.props.postID,
+            content: this.state.reply,
+        }))
         this.setState({
             reply: ''
         })
@@ -56,6 +63,12 @@ ReplyEditForm.propTypes = {
     editReply: PropTypes.func.isRequired,
     postID: PropTypes.number.isRequired,
     toggleEditMode: PropTypes.func.isRequired,
+    ws: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 }
 
-export default connect(null, { editReply })(ReplyEditForm)
+const mapStateToProps = state => ({
+    auth: state.auth,
+})
+
+export default connect(mapStateToProps, { editReply })(ReplyEditForm)

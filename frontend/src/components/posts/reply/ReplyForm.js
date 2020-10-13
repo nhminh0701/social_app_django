@@ -8,12 +8,6 @@ export class ReplyForm extends Component {
         reply: '',
     }
 
-    static propTypes = {
-        commentID: PropTypes.number,
-        postID: PropTypes.number,
-        postReply: PropTypes.func.isRequired,
-    }
-
     onReplyChange = e => {
         this.setState({
             ...this.state,
@@ -23,9 +17,16 @@ export class ReplyForm extends Component {
 
     onFormSubmit = e => {
         e.preventDefault();
-        this.props.postReply(
-            this.props.postID, 
-            this.props.commentID, this.state.reply);
+        // this.props.postReply(
+        //     this.props.postID, 
+        //     this.props.commentID, this.state.reply);
+        this.props.ws.send(JSON.stringify({
+            token: this.props.auth.token,
+            type: 'POSTING_REPLY',
+            postID: this.props.postID,
+            commentID: this.props.commentID,
+            content: this.state.reply,
+        }))
         this.setState({
             reply: ''
         });
@@ -54,4 +55,16 @@ export class ReplyForm extends Component {
     }
 }
 
-export default connect(null, { postReply })(ReplyForm)
+ReplyForm.propTypes = {
+    commentID: PropTypes.number,
+    postID: PropTypes.number,
+    postReply: PropTypes.func.isRequired,
+    ws: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+})
+
+export default connect(mapStateToProps, { postReply })(ReplyForm)

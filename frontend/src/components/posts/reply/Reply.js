@@ -23,7 +23,13 @@ export class Reply extends Component {
     }
 
     onDeleteClick = () => {
-        this.props.deleteReply(this.props.reply, this.props.postID);
+        // this.props.deleteReply(this.props.reply, this.props.postID);
+        this.props.ws.send(JSON.stringify({
+            type: 'DELETING_REPLY',
+            token: this.props.auth.token,
+            replyData: this.props.reply,
+            postID: this.props.postID,
+        }))
     }
 
     toggleEditMode = () => {
@@ -72,6 +78,7 @@ export class Reply extends Component {
                     reply={this.props.reply} 
                     postID={this.props.postID} 
                     toggleEditMode={this.toggleEditMode}
+                    ws={this.props.ws}
                 />
             }
             
@@ -97,6 +104,7 @@ Reply.propTypes = {
     posts: PropTypes.object.isRequired,
     deleteReply: PropTypes.func.isRequired,
     postID: PropTypes.number.isRequired,
+    ws: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

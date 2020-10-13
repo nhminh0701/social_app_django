@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { postComment } from '../../actions/comments';
+import auth from '../../reducers/auth';
 
 export class CommentForm extends Component {
     state = {
         comment: '',
-    }
-
-    static propTypes = {
-        postID: PropTypes.number,
     }
 
     onCommentChange = e => {
@@ -21,8 +18,13 @@ export class CommentForm extends Component {
 
     onFormSubmit = e => {
         e.preventDefault();
-        this.props.postComment(
-            this.props.postID.toString(), this.state.comment);
+        // this.props.postComment(this.props.postID.toString(), this.state.comment);
+        this.props.ws.send(JSON.stringify({
+            postID: this.props.postID,
+            content: this.state.comment,
+            type: 'POSTING_COMMENT',
+            token: this.props.auth.token,
+        }))
         this.setState({
             comment: ''
         });
@@ -52,4 +54,14 @@ export class CommentForm extends Component {
     }
 }
 
-export default connect(null, { postComment })(CommentForm)
+CommentForm.propTypes = {
+    postID: PropTypes.number,
+    auth: PropTypes.object.isRequired,
+    ws: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+})
+
+export default connect(mapStateToProps, { postComment })(CommentForm)
